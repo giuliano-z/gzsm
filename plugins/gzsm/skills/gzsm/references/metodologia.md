@@ -1,6 +1,6 @@
 # GZSM — metodología por escenario
 
-**Versión 2.0 · Giuliano Zulatto**
+**Versión 1.0 · Giuliano Zulatto**
 
 GZSM gobierna el ciclo de vida de un sistema de software o de un servicio tecnológico: qué tipo de trabajo es cada cosa, qué tiene que quedar escrito, cuándo se cierra y cómo se mantiene vivo lo que ya está en producción.
 
@@ -10,7 +10,7 @@ GZSM gobierna el ciclo de vida de un sistema de software o de un servicio tecnol
 
 ## 1. Por qué existe
 
-Nació de tres problemas que aparecen cuando una persona o un equipo chico mantiene varios sistemas a la vez:
+Nació de tres problemas que aparecen cuando una persona o un equipo pequeño mantiene varios sistemas a la vez:
 
 1. **Información dispersa.** Repos, notas, chats con IA y memoria. Ningún lugar sabe el todo.
 2. **Procesos pensados para construir, no para operar.** El mantenimiento recurrente no es un cambio, es una rutina, y los ciclos clásicos no lo capturan.
@@ -32,14 +32,14 @@ Software y servicios tecnológicos: productos propios, sistemas a medida para cl
 
 ## 4. Quién hace qué
 
-GZSM decide **qué** se hace, en qué orden y qué queda escrito. Las skills y los conectores ejecutan **dentro** de una estación. Si mañana cambian las skills, GZSM no cambia.
+GZSM decide **qué** se hace, en qué orden y qué queda escrito. Las skills y los conectores ejecutan **dentro** de una estación. Si mañana cambian las skills, GZSM no cambia. En Claude Code, las skills de un plugin llevan su prefijo (`/mattpocock-skills:grill-me`); aquí se usa el nombre corto.
 
 | Trabajo | Herramienta | Notas |
 |---|---|---|
 | Interrogar una idea o un plan | `/grill-with-docs` (en un repo) · `/grill-me` | Skills de Matt Pocock. Dejan glosario y ADRs |
 | Investigar | `/research` | Deja un `.md` con fuentes |
 | Prototipo descartable | `/prototype` | |
-| Escribir la spec | `/to-spec` | Con "Comportamiento no deseado" en EARS (§12) |
+| Escribir la spec | `/to-spec` | La publica en el gestor de issues; el bloque GZSM del `CLAUDE.md` le suma requisitos EARS y "Comportamiento no deseado" (§12) |
 | Partir en tareas | `/to-tickets` | Publica issues |
 | Implementar | `/implement` → `/tdd` | No commitea (§12) |
 | Bugs difíciles | `/diagnosing-bugs` | |
@@ -73,15 +73,15 @@ flowchart TD
   OP & CA & IM & VA & EX & CO -. "4. ¿trabaja alguien más? ¿tiene un LLM adentro?" .-> CAP["+ COLABORAR · + CON IA"]
 ```
 
-Si una respuesta es "no sé", se elige el módulo más barato que la conteste (Validar o Explorar), nunca Construir.
+Si una respuesta es "no sé", se elige el módulo más barato que la conteste (Validar o Explorar), nunca Construir. Una pregunta comercial (precio, mercado, modelo de cobro) va a Validar aunque el producto ya exista.
 
 ## 6. Los seis módulos
 
 | Módulo | Cuándo | Qué produce | Cómo termina |
 |---|---|---|---|
 | **Validar** | Idea sin evidencia de que alguien la quiera o la pague | Hipótesis escritas y una prueba real: entrevistas, landing con precio, preventa | Decisión escrita: se descarta, se explora o se construye |
-| **Explorar** | No sabemos si se puede o cómo | Prototipo con fecha de descarte escrita | Decisión de salida escrita: se tira, con lo aprendido, o pasa a Construir |
-| **Construir** | Sistema nuevo validado | Repo con `CLAUDE.md`, `CONTEXT.md`, ADRs, specs, issues y `estado.md` desde el día 1; runbook antes de producción | Primera versión en producción; pasa a Operar |
+| **Explorar** | No sabemos si se puede o cómo | Prototipo con fecha de descarte escrita | Decisión de salida escrita: se descarta, con lo aprendido, o pasa a Construir |
+| **Construir** | Sistema nuevo validado | Repo con `CLAUDE.md`, glosario del dominio, ADRs, specs, issues y `estado.md` desde el día 1; runbook antes de producción | Primera versión en producción; pasa a Operar |
 | **Implementar** | Cliente nuevo de un producto replicable | Instancia configurada desde una plantilla, checklist de alta, datos del cliente fuera del código | Cliente funcionando y en el runbook del producto |
 | **Cambiar** | Funcionalidad, arreglo o migración sobre algo vivo | Spec (o test que reproduce el bug), issues, código, registro del cambio, bump de versión | Validación con el usuario requisito por requisito y `estado.md` al día |
 | **Operar** | Rutinas, incidentes, adopción de un sistema ajeno, pausa o baja | Runbook, calendario de mantenimiento, postmortem por incidente | Es continuo; cada rutina cierra con su registro |
@@ -92,7 +92,7 @@ flowchart LR
   VA -- "se construye" --> CO["CONSTRUIR"]
   VA -- "se descarta" --> AR["Archivo con lo aprendido"]
   EX -- "pasa" --> CO
-  EX -- "se tira" --> AR
+  EX -- "se descarta" --> AR
   CO -- "primera versión en producción" --> OP["OPERAR"]
   OP -- "pedido o incidente" --> CA["CAMBIAR"]
   CA -- "validado" --> OP
@@ -100,12 +100,30 @@ flowchart LR
   IM -- "cliente funcionando" --> OP
 ```
 
+### Skills del plugin
+
+| Skill | Qué cubre | Estado |
+|---|---|---|
+| `gzsm` | Selector de módulo y estaciones (esta guía) | Estable |
+| `sesion-proyecto` | Abrir y cerrar sesiones con `estado.md` | Estable |
+| `validar` | Hipótesis, prueba real y decisión escrita | Beta |
+| `orbit` | Nueve ejes para evaluar una idea | Beta |
+| `explorar` | Prototipo con pregunta, límite y fecha de descarte | Beta |
+| `construir` | Sistema nuevo: constitución, specs, runbook antes de producción | Estable |
+| `implementar` | Alta de un cliente en un producto replicable | Beta |
+| `cambiar` | Funcionalidad, preventivo y bug sobre algo vivo | Estable |
+| `operar` | Rutinas, incidentes, escritura en producción, adopción y baja | Estable |
+| `colaborar` | Capa para trabajo con más de una persona | Estable |
+| `con-ia` | Capa para sistemas con un LLM adentro | Beta |
+
+**Estable** = usado en un sistema en producción con usuarios reales. **Beta** = definido y usado en casos puntuales.
+
 ## 7. Las dos capas
 
 **Colaborar**: cuando trabaja alguien más (socio, empleado, grupo de facultad).
 - `main` protegida y todo entra por PR.
 - Cada spec e issue tiene un dueño. `ready-for-agent` y `ready-for-human` separan lo que hace un agente de lo que hace una persona.
-- El mismo `CLAUDE.md` y `CONTEXT.md` para todos.
+- El mismo `CLAUDE.md` y el mismo glosario del dominio para todos.
 - Las decisiones se toman en un solo lugar (ADR o issue), no en un chat, y llevan señal de cambio.
 - Si se trabaja en paralelo, se escribe la señal: "si a tal fecha no está X, lo tomamos nosotros".
 
@@ -113,12 +131,12 @@ flowchart LR
 - Prompts versionados en el repo. Cambiar un prompt es un cambio con bump de versión.
 - Evals como tests: conversaciones de prueba con resultado esperado, corridas en CI. Sin evals verdes no se publica.
 - Salida estructurada validada con un esquema en toda herramienta que escribe datos.
-- Métricas propias: costo por conversación, latencia, tasa de respaldo; modelo de respaldo en el runbook.
+- Métricas propias: costo por conversación, latencia, tasa de derivación a una persona o a un modelo de respaldo; modelo de respaldo en el runbook.
 - Trazas por conversación (herramientas llamadas y argumentos), guardadas por un plazo definido.
 
 ## 8. Las siete estaciones
 
-Toda tarea recorre las mismas estaciones. Lo que cambia por módulo es cuáles se saltean.
+Toda tarea recorre las mismas estaciones. Lo que cambia por módulo es cuáles se omiten.
 
 | Estación | Pregunta | Herramientas típicas |
 |---|---|---|
@@ -133,7 +151,7 @@ Toda tarea recorre las mismas estaciones. Lo que cambia por módulo es cuáles s
 | Módulo | E0 | E1 | E2 | E3 | E4 | E5 | E6 |
 |---|---|---|---|---|---|---|---|
 | Validar | ● | ● | hipótesis | prueba real | — | decisión | ● |
-| Explorar | ● | ● | — | prototipo | — | decisión de salida | ● |
+| Explorar | ● | ● | límites | prototipo | — | decisión de salida | ● |
 | Construir | ● | ● | ● | ● | ● | ● | ● |
 | Implementar | ● | checklist | — | configuración | ● | ● | ● |
 | Cambiar (funcionalidad) | ● | ● | ● | ● | ● | ● | ● |
@@ -150,7 +168,7 @@ Cada pregunta tiene un solo lugar donde se responde.
 | ¿Cómo va todo, de un vistazo? | Un tablero alimentado por los issues |
 | ¿Dónde estamos y qué sigue? | `docs/estado.md` del repo |
 | ¿Por qué es así? | ADRs del repo |
-| ¿Cómo le decimos a las cosas? | `CONTEXT.md` del repo |
+| ¿Cómo le decimos a las cosas? | Glosario del dominio del repo (`GLOSSARY.md`) |
 | ¿Qué cambió y en qué versión? | `CHANGELOG.md` y el registro de cada cambio |
 | ¿Cómo se mantiene vivo? | `docs/runbook.md` y el calendario de mantenimiento |
 | ¿Qué reglas sigue el agente? | `CLAUDE.md` del repo, corto y con punteros |
@@ -169,7 +187,7 @@ Cada issue está en Activa, Esperando a alguien, Algún día o Hecha, y tiene du
 
 | Tipo | Qué es | Dónde entra |
 |---|---|---|
-| **Subagente** | Otro Claude con un encargo chico y escrito, que vuelve con un resultado | E1 Entender (investigar) y E4 Revisar (revisor con contexto limpio) |
+| **Subagente** | Otro Claude con un encargo pequeño y escrito, que vuelve con un resultado | E1 Entender (investigar) y E4 Revisar (revisor con contexto limpio) |
 | **Agente autónomo** | Corre sin una persona: tareas programadas, workflows | Operar: chequeos recurrentes |
 | **Agente como producto** | Un LLM con herramientas, memoria y reglas que atiende usuarios | Capa Con IA |
 
@@ -182,7 +200,7 @@ Cada issue está en Activa, Esperando a alguien, Algún día o Hecha, y tiene du
 1. **Cierre de sesión obligatorio** (§10).
 2. **Git:** el agente no corre comandos de git que escriban en repos personales; los commits los hace una persona. En repos compartidos puede crear ramas y abrir PRs, nunca mergear ni pushear a `main`.
 3. **Escritura en producción:** diff aprobado, prueba en seco, verificación de que se apunta a la base correcta, snapshot y verificación independiente.
-4. **Nada se cierra sin correr en producción** con datos reales y sin la validación del usuario.
+4. **En Construir y Cambiar, nada se cierra sin correr en producción** con datos reales y sin la validación del usuario.
 5. **El output crudo es la única fuente de verdad**, nunca el resumen de un agente.
 
 Tres enganches con las skills de Matt Pocock, escritos en el `CLAUDE.md` de cada repo para que una actualización de las skills no los pise:
@@ -193,4 +211,4 @@ Tres enganches con las skills de Matt Pocock, escritos en el `CLAUDE.md` de cada
 
 ## 13. Cómo cambia la metodología
 
-Un cambio entra a GZSM cuando el mismo patrón aparece en dos proyectos **o** en dos módulos distintos, **o** cuando el autor lo valida explícitamente. Las fricciones se registran antes de cambiar nada.
+Un cambio entra a GZSM cuando el mismo patrón aparece en dos proyectos **o** en dos módulos distintos. Las fricciones se registran antes de cambiar nada.

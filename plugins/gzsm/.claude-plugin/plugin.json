@@ -1,11 +1,12 @@
 {
   "name": "gzsm",
   "displayName": "GZSM",
-  "version": "0.2.0",
-  "description": "Metodología GZSM: elige el módulo de trabajo (Validar, Explorar, Construir, Implementar, Cambiar, Operar), guía las estaciones E0–E6 y abre y cierra sesiones de proyecto actualizando estado.md.",
+  "version": "1.0.0",
+  "description": "Metodología de software por escenario para Claude. Un selector de cuatro preguntas elige entre seis módulos (Validar, Explorar, Construir, Implementar, Cambiar, Operar) y dos capas (Colaborar, Con IA); cada módulo recorre siete estaciones con checklists y plantillas, y las sesiones cierran actualizando estado.md. Complementa las skills de Matt Pocock.",
   "author": { "name": "Giuliano Zulatto", "url": "https://github.com/giuliano-z" },
   "homepage": "https://github.com/giuliano-z/gzsm",
   "repository": "https://github.com/giuliano-z/gzsm",
   "license": "MIT",
-  "keywords": ["metodologia", "workflow", "spec-driven-development", "skills"]
+  "icon": ".claude-plugin/icon.png",
+  "keywords": ["methodology", "workflow", "spec-driven-development", "maintenance", "incident-response", "agent-skills", "espanol"]
 }

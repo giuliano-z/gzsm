@@ -1,83 +1,181 @@
-# GZSM
+<p align="center">
+  <img src="plugins/gzsm/.claude-plugin/icon.png" alt="GZSM" width="112">
+</p>
 
-> **English summary.** GZSM is a scenario-based software methodology packaged as a Claude plugin. Instead of applying one heavy process to everything, a four-question selector picks one of six modules (Validate, Explore, Build, Implement, Change, Operate) and two optional layers (Collaborate, With AI). Every task then moves through the same seven stations, E0 to E6, and each station names the agent skill to use. A second skill opens and closes work sessions by reading and updating a `docs/estado.md` file, so context survives between sessions and between people. I built it from maintaining a Django ERP in production on my own. The skills and docs are written in Spanish.
+<h1 align="center">GZSM</h1>
 
-GZSM es una metodología de trabajo para software y servicios tecnológicos, empaquetada como plugin de Claude. Decide **qué tipo de trabajo es cada cosa, en qué orden se hace y qué tiene que quedar escrito**. Para escribir el código usa las [skills de Matt Pocock](https://github.com/mattpocock/skills) dentro de cada etapa.
+<p align="center">
+  <strong>A scenario-based software methodology for Claude.</strong><br>
+  Pick the right process for the job, then let agent skills do the work.
+</p>
 
-La armé mientras mantenía solo un ERP en Django en producción. El problema no era escribir código: era saber, después de una semana, en qué estado estaba cada sistema y qué seguía.
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT license"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-1.0.0-informational.svg" alt="Version 1.0.0"></a>
+  <a href="https://github.com/giuliano-z/gzsm/actions/workflows/validar.yml"><img src="https://github.com/giuliano-z/gzsm/actions/workflows/validar.yml/badge.svg" alt="Skill validation"></a>
+  <img src="https://img.shields.io/badge/Claude-plugin-d97757.svg" alt="Claude plugin">
+  <img src="https://img.shields.io/badge/skills-espa%C3%B1ol-yellow.svg" alt="Skills in Spanish">
+</p>
 
-## Qué trae
+<p align="center"><a href="README.es.md">Leer en español</a></p>
 
-| Skill | Qué hace | Cómo se pide |
-|---|---|---|
-| `gzsm` | Con cuatro preguntas elige el módulo, dice qué estaciones aplican, qué skill usar en cada una y cuál es el próximo paso | "GZSM: ¿qué módulo es esto?", "¿por dónde arranco?" |
-| `sesion-proyecto` | "Abrí X" lee `estado.md`, los issues y los últimos commits, y propone qué hacer. "Cerrá la sesión" actualiza `estado.md` y propone issues. Nunca commitea | "Abrí X", "Cerrá la sesión" |
+---
 
-También trae la metodología completa ([`metodologia.md`](plugins/gzsm/skills/gzsm/references/metodologia.md)) y plantillas de [`estado.md`](plantillas/estado.md), [spec con EARS](plantillas/spec.md) y [ADR](plantillas/adr.md).
+Most AI coding workflows apply one heavy process to everything: a typo fix gets the same ceremony as a new product. GZSM does the opposite. A **four-question selector** decides what kind of work you are facing, and each kind gets its own route through **seven stations**, with the checklists, templates and agent skills that route needs.
 
-## Cómo funciona
+It ships as a Claude plugin with **11 skills**. It works in claude.ai, the Claude desktop app and Claude Code, and it is built to sit on top of [Matt Pocock's agent skills](https://github.com/mattpocock/skills), which do the hands-on engineering inside each station.
+
+> **Language.** The skills and templates are written in Spanish. This README is the English entry point; the full docs are in [README.es.md](README.es.md).
+
+## Why
+
+GZSM came out of maintaining a Django ERP in production, alone, with an AI coding agent. Writing code was never the hard part. These were:
+
+1. **Scattered context.** Repos, notes, chats and memory, and no single place that knew the whole picture.
+2. **Processes built for building, not for running.** Recurring maintenance is not a change, it is a routine, and classic lifecycles do not capture it.
+3. **Ceremony without triggers.** Good documents that nothing forces you to open or close.
+
+## How it works
 
 ```mermaid
 flowchart TD
-  Q1{"¿Ya existe y tiene usuarios?"}
-  Q1 -- "sí: rutina o incidente" --> OP["OPERAR"]
-  Q1 -- "sí: algo nuevo o un arreglo" --> CA["CAMBIAR"]
-  Q1 -- "sí: un cliente nuevo del mismo producto" --> IM["IMPLEMENTAR"]
-  Q1 -- no --> Q2{"¿Sabemos que alguien lo quiere o lo paga?"}
-  Q2 -- no --> VA["VALIDAR"]
-  Q2 -- sí --> Q3{"¿Sabemos cómo construirlo?"}
-  Q3 -- no --> EX["EXPLORAR"]
-  Q3 -- sí --> CO["CONSTRUIR"]
+  Q1{"Does it already exist and have users?"}
+  Q1 -- "yes: routine or incident" --> OP["OPERAR · Operate"]
+  Q1 -- "yes: something new or a fix" --> CA["CAMBIAR · Change"]
+  Q1 -- "yes: a new client of the same product" --> IM["IMPLEMENTAR · Implement"]
+  Q1 -- no --> Q2{"Is there evidence someone wants it or pays for it?"}
+  Q2 -- no --> VA["VALIDAR · Validate"]
+  Q2 -- yes --> Q3{"Do we know how to build it?"}
+  Q3 -- no --> EX["EXPLORAR · Explore"]
+  Q3 -- yes --> CO["CONSTRUIR · Build"]
 ```
 
-Cuando trabaja alguien más se suma la capa **Colaborar**. Cuando el sistema tiene un LLM adentro se suma **Con IA**. Si una respuesta es "no sé", se elige el módulo más barato que la conteste, nunca Construir.
+Two layers add on top of any module: **Colaborar** (more than one person) and **Con IA** (the system has an LLM inside). When an answer is "I don't know", GZSM picks the cheapest module that answers it, never Build.
 
-Después toda tarea recorre las mismas siete estaciones. Lo que cambia por módulo es cuáles se saltean:
+Every task then moves through the same stations. Each module skips the ones it does not need.
 
-| Estación | Pregunta | Skill típica |
+| Station | Question | Typical skill |
 |---|---|---|
-| E0 Entrada | ¿Qué es esto? | `gzsm`, `/triage` |
-| E1 Entender | ¿Qué queremos y por qué? | `/grill-with-docs`, `/research` |
-| E2 Especificar | ¿Qué tiene que pasar, también cuando sale mal? | `/to-spec` con EARS |
-| E3 Construir | Hacerlo | `/to-tickets`, `/implement`, `/tdd` |
-| E4 Revisar | ¿Cumple la spec y los estándares? | `/code-review` |
-| E5 Entregar | ¿Lo usa quien lo pidió y funciona? | Validación requisito por requisito |
-| E6 Cerrar | ¿Qué quedó y qué sigue? | `sesion-proyecto` |
+| E0 Intake | What is this? | `gzsm`, `/triage` |
+| E1 Understand | What do we want, and why? | `/grill-with-docs`, `/research`, `orbit` |
+| E2 Specify | What must happen, including when things go wrong? | `/to-spec` plus EARS and unwanted behaviour |
+| E3 Build | Do it | `/to-tickets`, `/implement`, `/tdd`, `/prototype` |
+| E4 Review | Does it meet the spec and the standards? | `/code-review` |
+| E5 Deliver | Does the person who asked use it, and does it work? | Validation, requirement by requirement |
+| E6 Close | What is left, and what comes next? | `sesion-proyecto` |
 
-E2 y E6 las decide una persona. E1 y E4 se pueden delegar a un subagente.
+E2 and E6 are decided by a person. E1 and E4 can be delegated to a subagent, and its output is reviewed before it is applied.
 
-## Ejemplo
+In Claude Code, plugin skills carry the plugin prefix (`/mattpocock-skills:grill-me`, `/gzsm:cambiar`); the tables use the short name. A commercial question (price, market, pricing model) goes to Validate even when the product already exists.
 
-> **Usuario:** GZSM: tenemos una herramienta que ya usa un cliente piloto y hay que decidir cómo cobrarla. ¿Qué módulo es?
->
-> **Claude:** Módulo: VALIDAR + Colaborar. Por qué: la herramienta existe, pero no sabemos cuánto ni cómo van a pagar los próximos clientes; es una hipótesis comercial, no código. Estaciones: E0, E1, E2 (hipótesis), E3 (prueba real), E5 (decisión escrita), E6. Ahora: E1 → `/grill-me` sobre el modelo de cobro. Queda escrito: hipótesis de precio y después un ADR con el precio elegido y su señal de cambio.
+## Skills
 
-## Instalar
+| Skill | What it does | Status |
+|---|---|---|
+| `gzsm` | Entry point: runs the selector and routes to the module | Stable |
+| `sesion-proyecto` | "Open X" reads `estado.md`, issues and commits; "close the session" updates `estado.md`. Never commits | Stable |
+| `cambiar` | Change a live system: features, adaptations, preventive work and bugs, with impact analysis and user validation | Stable |
+| `operar` | Routines, incidents (P1–P4, five whys, blameless postmortems), safe production writes, adoption and shutdown | Stable |
+| `construir` | New system: constitution, numbered EARS specs, runbook before production | Stable |
+| `colaborar` | Layer for teams: owners, PRs, where decisions live, what the agent may do | Stable |
+| `validar` | Written hypotheses, the cheapest real test, a written decision | Beta |
+| `orbit` | Nine axes to assess a product idea, with a Latin American lens | Beta |
+| `explorar` | Throwaway prototype with a question, a time box and a discard date | Beta |
+| `implementar` | Onboard a client onto a replicable product | Beta |
+| `con-ia` | Layer for LLM systems: versioned prompts, evals as tests, traces | Beta |
 
-**En claude.ai o en la app de escritorio:** Personalizar → Plugins → Agregar → Agregar marketplace, y pegá `https://github.com/giuliano-z/gzsm`. Después instalá `gzsm` desde la lista. Se sincroniza solo con Claude Code.
+**Stable** means used on a production system with real users. **Beta** means defined and used in specific cases.
 
-**Solo en Claude Code:**
+## Quick start
+
+**1. Install**
+
+In claude.ai or the desktop app: **Customize → Plugins → Add → Add marketplace**, paste `https://github.com/giuliano-z/gzsm` and install `gzsm`. Claude Code picks it up the next time it starts with the same account (it shows as `gzsm@synced`).
+
+In Claude Code only:
 
 ```
 /plugin marketplace add giuliano-z/gzsm
 /plugin install gzsm@gzsm
 ```
 
-Para que la skill `gzsm` sea útil, instalá también las [skills de Matt Pocock](https://github.com/mattpocock/skills): `claude plugin install mattpocock-skills@claude-plugins-official`.
-
-## Estructura
+GZSM is most useful with Matt Pocock's skills installed too:
 
 ```
-.claude-plugin/marketplace.json     marketplace (este repo)
-plugins/gzsm/
-  .claude-plugin/plugin.json        manifiesto del plugin
-  skills/gzsm/                      selector y estaciones
-    references/metodologia.md       la metodología completa
-  skills/sesion-proyecto/           abrir y cerrar sesiones
-    assets/estado-template.md
-plantillas/                         estado, spec (EARS) y ADR
+claude plugin install mattpocock-skills@claude-plugins-official
 ```
 
-## Licencia
+**2. Ask** (the skills answer in Spanish)
 
-[MIT](LICENSE) · Giuliano Zulatto
+```
+GZSM: un cliente pidió exportar a Excel el reporte mensual de un sistema que ya usa. ¿Qué módulo es?
+```
+
+```
+Módulo: CAMBIAR
+Por qué: el sistema existe y tiene usuarios, y el pedido es una funcionalidad nueva.
+Estaciones: E0 a E6
+Ahora: E1 → análisis de impacto y /grill-with-docs sobre el formato del reporte
+Queda escrito: CHANGE-NNN con el impacto, la spec con comportamiento no deseado y el checklist de validación con el usuario
+```
+
+**3. Wire up a repo**
+
+Add the GZSM block from [`claude-md.md`](plugins/gzsm/skills/construir/assets/claude-md.md) to the repo's `CLAUDE.md`, run `/setup-matt-pocock-skills` once, and start every session with "abrí [project]" and end it with "cerrá la sesión".
+
+## Templates
+
+| Template | Module |
+|---|---|
+| [Spec with EARS and unwanted behaviour](plugins/gzsm/skills/cambiar/assets/spec.md) | Build, Change |
+| [Change record](plugins/gzsm/skills/cambiar/assets/change.md) · [Technical debt](plugins/gzsm/skills/cambiar/assets/deuda.md) | Change |
+| [Runbook](plugins/gzsm/skills/operar/assets/runbook.md) · [Maintenance calendar](plugins/gzsm/skills/operar/assets/calendario-mantenimiento.md) · [Postmortem](plugins/gzsm/skills/operar/assets/postmortem.md) | Operate |
+| [Constitution](plugins/gzsm/skills/construir/assets/constitucion.md) · [`CLAUDE.md` block](plugins/gzsm/skills/construir/assets/claude-md.md) | Build |
+| [Hypotheses](plugins/gzsm/skills/validar/assets/hipotesis.md) · [Idea (Orbit)](plugins/gzsm/skills/orbit/assets/idea.md) | Validate |
+| [Prototype](plugins/gzsm/skills/explorar/assets/prototipo.md) | Explore |
+| [Client onboarding](plugins/gzsm/skills/implementar/assets/checklist-alta.md) | Implement |
+| [Evals](plugins/gzsm/skills/con-ia/assets/evals.md) · [Agent registry](plugins/gzsm/skills/con-ia/assets/registro-agentes.md) | With AI |
+| [`estado.md`](plugins/gzsm/skills/sesion-proyecto/assets/estado-template.md) | All |
+
+Also included: twelve [working rules for an agent on a production system](plugins/gzsm/skills/cambiar/references/reglas-de-ritmo.md), a [deploy checklist](plugins/gzsm/skills/cambiar/references/checklist-deploy.md) and a [production write protocol](plugins/gzsm/skills/operar/references/escritura-produccion.md). The full methodology is in [`metodologia.md`](plugins/gzsm/skills/gzsm/references/metodologia.md).
+
+## Guardrails
+
+GZSM's third principle: *anything mechanical is enforced by a check, not by a written rule.*
+
+| Script | What it blocks |
+|---|---|
+| [`check-estado.sh`](scripts/check-estado.sh) | A commit that changes code without updating `docs/estado.md` |
+| [`check-sensibles.sh`](scripts/check-sensibles.sh) | A commit whose added lines contain a term from a blocklist kept **outside** the repo |
+| [`validar-skills.py`](scripts/validar-skills.py) | Skill frontmatter that claude.ai would reject, and broken template references (runs in CI) |
+
+Use one as a pre-commit hook in your own repo:
+
+```
+curl -fsSL -o .git/hooks/pre-commit https://raw.githubusercontent.com/giuliano-z/gzsm/main/scripts/check-estado.sh
+chmod +x .git/hooks/pre-commit
+```
+
+This replaces any existing pre-commit hook. To run both scripts, call them one after the other from a single hook.
+
+## Principles
+
+1. The process is chosen per scenario; it is never applied whole by default.
+2. If it is not written down, it did not happen: every session closes by updating `estado.md`.
+3. Anything mechanical is enforced by a check, not by a written rule.
+4. Validate before you build.
+5. One tool per job.
+6. Nothing changes the methodology without evidence from two projects or two modules.
+7. Every decision carries its change signal: the condition that forces a review.
+
+## Foundations
+
+GZSM borrows most of its pieces and arranges them by scenario: Spec-Driven Development, EARS, ADRs, the four ISO/IEC 14764 maintenance types, Lehman's laws, Fowler's refactoring, Lean Startup, *The Mom Test*, five whys, Google SRE's blameless postmortems, OWASP, Keep a Changelog and SemVer. [docs/fundamentos.md](docs/fundamentos.md) lists what comes from each source and what is original.
+
+## Contributing
+
+The most useful contribution is a **friction report**: a concrete case where the methodology fell short. There is an issue template for it. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+[MIT](LICENSE) © 2026 [Giuliano Zulatto](https://github.com/giuliano-z)

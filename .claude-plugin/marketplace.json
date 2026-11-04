@@ -1,6 +1,6 @@
 {
   "name": "gzsm",
-  "description": "Marketplace de GZSM, la metodología por escenario de Giuliano Zulatto para trabajar con Claude.",
+  "description": "GZSM: metodología de software por escenario para Claude, de Giuliano Zulatto.",
   "owner": {
     "name": "Giuliano Zulatto",
     "url": "https://github.com/giuliano-z"
@@ -9,7 +9,8 @@
     {
       "name": "gzsm",
       "source": "./plugins/gzsm",
-      "description": "Metodología GZSM para Claude: selector de módulo, estaciones E0–E6 y apertura y cierre de sesiones con estado.md."
+      "description": "Selector de módulo, seis módulos con checklists y plantillas, capas Colaborar y Con IA, y cierre de sesión con estado.md.",
+      "version": "1.0.0"
     }
   ]
 }
