@@ -1,0 +1,11 @@
+{
+  "name": "gzsm",
+  "displayName": "GZSM",
+  "version": "0.2.0",
+  "description": "Metodología GZSM: elige el módulo de trabajo (Validar, Explorar, Construir, Implementar, Cambiar, Operar), guía las estaciones E0–E6 y abre y cierra sesiones de proyecto actualizando estado.md.",
+  "author": { "name": "Giuliano Zulatto", "url": "https://github.com/giuliano-z" },
+  "homepage": "https://github.com/giuliano-z/gzsm",
+  "repository": "https://github.com/giuliano-z/gzsm",
+  "license": "MIT",
+  "keywords": ["metodologia", "workflow", "spec-driven-development", "skills"]
+}
