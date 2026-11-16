@@ -172,14 +172,36 @@ Cada pregunta tiene un solo lugar donde se responde.
 | ¿Qué cambió y en qué versión? | `CHANGELOG.md` y el registro de cada cambio |
 | ¿Cómo se mantiene vivo? | `docs/runbook.md` y el calendario de mantenimiento |
 | ¿Qué reglas sigue el agente? | `CLAUDE.md` del repo, corto y con punteros |
+| ¿Desde dónde se llega a todo? | Nota central del proyecto, si hay base de notas personal |
 
 Cada issue está en Activa, Esperando a alguien, Algún día o Hecha, y tiene dueño. "Esperando a alguien" dice a quién.
 
+### Enlaces entre documentos
+
+| Dónde se escribe | Cómo se enlaza | Por qué |
+|---|---|---|
+| Archivo dentro de un repo (`docs/`, `specs/`, compartido o no) | Enlace Markdown relativo: `[estado](estado.md)` | Funciona en GitHub y los editores de notas lo cuentan como enlace; un `[[ ]]` en GitHub se ve roto |
+| Nota de la base de notas personal, fuera de los repos | El formato de la base. En Obsidian, `[[nota]]`; si el nombre se repite (`estado`, `README`), con ruta: `[[Proyecto/docs/estado\|estado]]` | El editor resuelve por nombre de archivo |
+| Comandos, rutas fuera del repo, archivos que no son notas | Backticks | No son notas |
+
+Los documentos versionados ya escritos (specs, ADR, CHANGE, postmortems) no se editan solo para agregar enlaces: se enlazan desde `estado.md` o desde la nota central.
+
+### Con base de notas personal (opcional)
+
+Si además del repo se usa una base de notas personal (por ejemplo, un vault de Obsidian que incluye el `docs/` de cada repo por enlace simbólico):
+
+- **Una nota central por proyecto**, con el nombre en minúsculas y guiones. Solo enlaza; no guarda estado.
+- **Un solo `estado.md`.** Con repo, en `docs/`; sin repo, en la carpeta del proyecto en la base. Nunca en los dos.
+- **Índice de sesiones.** Las notas de trabajo de cada sesión no se reescriben; el cierre agrega una línea por nota nueva al índice del proyecto.
+- Toda nota nueva de un proyecto enlaza, como mínimo, a su nota central.
+- **Proyecto compartido:** nada que el otro necesite queda solo en la base personal (capa Colaborar).
+- **Alta:** Construir crea la nota central y su fila en el índice general de la base. En Implementar, lo del cliente vive en `docs/clientes/` del repo del producto y la nota central del producto enlaza ahí; el cliente no lleva nota central propia.
+
 ## 10. Sesiones: abrir y cerrar
 
-**Abrir:** "abrí X". Claude lee `estado.md`, los issues abiertos y los últimos commits, y propone qué hacer hoy.
+**Abrir:** "abrí X". Claude lee la nota central (si hay base de notas), `estado.md`, los issues abiertos y los últimos commits, y propone qué hacer hoy.
 
-**Cerrar:** "cerrá la sesión". Claude actualiza `estado.md` (última sesión, decisiones, próximo paso), propone issues y registra lo que haya cambiado (cambio, ADR, deuda). Regla fija, sin excepción.
+**Cerrar:** "cerrá la sesión". Claude actualiza `estado.md` (última sesión, decisiones, próximo paso), propone issues y registra lo que haya cambiado (cambio, ADR, deuda). Con base de notas, suma las notas nuevas al índice de sesiones y verifica que enlacen a la nota central. Regla fija, sin excepción.
 
 **Red de seguridad sugerida:** un pre-commit que rechaza el commit si cambió código y no cambió `estado.md`, y una tarea programada que compara los commits del día con cada `estado.md` y avisa cuál quedó viejo.
 

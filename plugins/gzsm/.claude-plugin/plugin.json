@@ -1,7 +1,7 @@
 {
   "name": "gzsm",
   "displayName": "GZSM",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Metodología de software por escenario para Claude. Un selector de cuatro preguntas elige entre seis módulos (Validar, Explorar, Construir, Implementar, Cambiar, Operar) y dos capas (Colaborar, Con IA); cada módulo recorre siete estaciones con checklists y plantillas, y las sesiones cierran actualizando estado.md. Complementa las skills de Matt Pocock.",
   "author": { "name": "Giuliano Zulatto", "url": "https://github.com/giuliano-z" },
   "homepage": "https://github.com/giuliano-z/gzsm",

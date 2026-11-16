@@ -130,7 +130,7 @@ Add the GZSM block from [`claude-md.md`](plugins/gzsm/skills/construir/assets/cl
 | [Spec with EARS and unwanted behaviour](plugins/gzsm/skills/cambiar/assets/spec.md) | Build, Change |
 | [Change record](plugins/gzsm/skills/cambiar/assets/change.md) · [Technical debt](plugins/gzsm/skills/cambiar/assets/deuda.md) | Change |
 | [Runbook](plugins/gzsm/skills/operar/assets/runbook.md) · [Maintenance calendar](plugins/gzsm/skills/operar/assets/calendario-mantenimiento.md) · [Postmortem](plugins/gzsm/skills/operar/assets/postmortem.md) | Operate |
-| [Constitution](plugins/gzsm/skills/construir/assets/constitucion.md) · [`CLAUDE.md` block](plugins/gzsm/skills/construir/assets/claude-md.md) | Build |
+| [Constitution](plugins/gzsm/skills/construir/assets/constitucion.md) · [ADR](plugins/gzsm/skills/construir/assets/adr.md) · [`CLAUDE.md` block](plugins/gzsm/skills/construir/assets/claude-md.md) | Build |
 | [Hypotheses](plugins/gzsm/skills/validar/assets/hipotesis.md) · [Idea (Orbit)](plugins/gzsm/skills/orbit/assets/idea.md) | Validate |
 | [Prototype](plugins/gzsm/skills/explorar/assets/prototipo.md) | Explore |
 | [Client onboarding](plugins/gzsm/skills/implementar/assets/checklist-alta.md) | Implement |

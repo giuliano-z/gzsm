@@ -11,6 +11,13 @@ description: Módulo Construir de GZSM para un sistema nuevo cuya demanda ya est
 
 ## Recorrido
 
+### Alta del proyecto
+Con base de notas personal (por ejemplo, un vault de Obsidian), el día que nace el proyecto:
+- **Nota central** con el nombre del proyecto en minúsculas y guiones (`mi-proyecto.md`). Solo enlaza: `estado.md`, documentos, índice de sesiones y repo. No guarda estado ni decisiones.
+- **Fila en el índice general** de la base (su README), que apunta a la nota central.
+- **Un solo `estado.md`:** en `docs/` del repo, que entra a la base por un enlace simbólico. Nunca una copia en la base.
+- Proyecto compartido: la nota central dice con quién y dónde se decide (`gzsm:colaborar`).
+
 ### E1 Entender
 - `/grill-with-docs` sobre el producto hasta que no queden decisiones abiertas. Deja el glosario del dominio (`GLOSSARY.md` en las versiones actuales de las skills de Matt; antes `CONTEXT.md`) y los primeros ADRs.
 - `/research` para lo técnico desconocido (APIs, costos, límites).
@@ -19,7 +26,7 @@ description: Módulo Construir de GZSM para un sistema nuevo cuya demanda ya est
 - **Constitución** (`docs/constitution.md`, plantilla `assets/constitucion.md`): cinco a siete principios verificables que no se negocian.
 - **Alcance del MVP** con MoSCoW: debe, debería, podría, no ahora.
 - **Una spec por funcionalidad** con `/to-spec`, que la publica en el gestor de issues. Si el repo guarda las specs como archivos, van numeradas en `specs/NNN-nombre/spec.md` con `assets/spec.md`. En los dos casos, con requisitos EARS y Comportamiento no deseado.
-- ADRs de arranque con `domain-modeling`: stack, hosting, modelo de datos, autenticación. Cada uno con su señal de cambio.
+- ADRs de arranque con `domain-modeling` o con `assets/adr.md`: stack, hosting, modelo de datos, autenticación. Cada uno con su señal de cambio.
 
 ### E3 Construir
 1. Repo con `CLAUDE.md` corto (bloque GZSM en `assets/claude-md.md`), glosario del dominio, `docs/estado.md` y CI desde el primer commit.
@@ -45,6 +52,7 @@ description: Módulo Construir de GZSM para un sistema nuevo cuya demanda ya est
 - **Traspaso:** runbook, credenciales en el gestor del cliente, documentación de uso y una sesión de capacitación registrada.
 
 ## Criterio de cierre
+- [ ] Nota central y fila en el índice general (si hay base de notas)
 - [ ] Constitución, glosario y ADRs de arranque escritos
 - [ ] Specs del MVP con comportamiento no deseado
 - [ ] CI en verde y checklist de deploy completo

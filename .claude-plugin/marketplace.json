@@ -10,7 +10,7 @@
       "name": "gzsm",
       "source": "./plugins/gzsm",
       "description": "Selector de módulo, seis módulos con checklists y plantillas, capas Colaborar y Con IA, y cierre de sesión con estado.md.",
-      "version": "1.0.0"
+      "version": "1.1.0"
     }
   ]
 }

@@ -8,6 +8,8 @@
 | Pedido por | [persona o rol] |
 | Fecha límite | [fecha o "sin fecha"] |
 
+*Relacionado: [estado](../estado.md) · [ADR-NNNN](../adr/NNNN-slug.md) · [PM-NNN](../postmortems/PM-NNN.md) (borrar los que no apliquen)*
+
 ## Qué y por qué
 [Dos o tres oraciones en términos del negocio, no técnicos.]
 
@@ -21,7 +23,7 @@
 | Migraciones | Sí / No |
 
 ## Requisitos
-Spec: `specs/NNN-nombre/spec.md` (o el test que reproduce el bug).
+Spec: [spec NNN](../../specs/NNN-nombre/spec.md) (o el test que reproduce el bug, entre backticks).
 
 ## Fuera de alcance
 - [al menos un ítem]
@@ -43,4 +45,5 @@ Validó: [quién] · Fecha: AAAA-MM-DD
 - [ ] Tests y CI en verde
 - [ ] Checklist de deploy completo
 - [ ] Validación con el usuario completa
-- [ ] CHANGELOG con vX.Y.Z
+- [ ] [CHANGELOG](../../CHANGELOG.md) con vX.Y.Z
+- [ ] Enlazado desde `estado.md` (última sesión)

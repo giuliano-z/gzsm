@@ -14,6 +14,8 @@ Un producto replicable crece por altas, no por proyectos. Si cada cliente exige 
 ### E1 Checklist de alta
 Copiar `assets/checklist-alta.md` para el cliente y completar los datos de entrada.
 
+Lo del cliente (este checklist, su configuración documentada y sus particularidades) vive en el repo del producto, en `docs/clientes/`, sin credenciales. Con base de notas personal, el cliente **no** tiene nota central propia ni fila en el índice general: la nota central del producto enlaza a `docs/clientes/`.
+
 ### E3 Configuración
 - La instancia sale de la **plantilla del producto**, nunca de copiar la de otro cliente.
 - **Datos del cliente fuera del código:** configuración y variables de entorno, no constantes en el repo.
@@ -31,6 +33,7 @@ Cliente agregado al runbook del producto (contactos, configuración, particulari
 
 ## Criterio de cierre
 - [ ] Checklist de alta completo
+- [ ] Cliente documentado en `docs/clientes/` del repo y enlazado desde la nota central del producto (si hay base de notas)
 - [ ] Ningún dato del cliente dentro del código
 - [ ] Pruebas y evals en verde con su configuración
 - [ ] Cliente funcionando y registrado en el runbook

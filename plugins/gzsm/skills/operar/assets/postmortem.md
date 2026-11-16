@@ -1,5 +1,6 @@
 # PM-NNN — Postmortem AAAA-MM-DD
 *Sistema: [nombre] vX.Y.Z · Obligatorio en P1 y P2, dentro de las 24 horas*
+*Relacionado: [runbook](../runbook.md) · [estado](../estado.md) · [CHANGE-NNN](../changes/CHANGE-NNN.md) que lo corrige (borrar los que no apliquen)*
 
 ## Resumen
 | Campo | Valor |

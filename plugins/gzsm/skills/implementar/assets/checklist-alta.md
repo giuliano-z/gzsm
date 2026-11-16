@@ -1,6 +1,10 @@
 # Alta de cliente — [cliente] en [producto]
 *Fecha: AAAA-MM-DD · Responsable: [quién]*
 
+## Registro
+- [ ] Este checklist guardado en `docs/clientes/` del repo del producto
+- [ ] Enlace desde la nota central del producto (si hay base de notas); el cliente no lleva nota central propia ni fila en el índice general
+
 ## Datos de entrada
 - [ ] Contacto principal y canal
 - [ ] Qué incluye el plan contratado

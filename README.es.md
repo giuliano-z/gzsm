@@ -127,7 +127,7 @@ Sumar el bloque de [`claude-md.md`](plugins/gzsm/skills/construir/assets/claude-
 | [Spec con EARS y comportamiento no deseado](plugins/gzsm/skills/cambiar/assets/spec.md) | Construir, Cambiar |
 | [Registro de cambio](plugins/gzsm/skills/cambiar/assets/change.md) · [Deuda técnica](plugins/gzsm/skills/cambiar/assets/deuda.md) | Cambiar |
 | [Runbook](plugins/gzsm/skills/operar/assets/runbook.md) · [Calendario de mantenimiento](plugins/gzsm/skills/operar/assets/calendario-mantenimiento.md) · [Postmortem](plugins/gzsm/skills/operar/assets/postmortem.md) | Operar |
-| [Constitución](plugins/gzsm/skills/construir/assets/constitucion.md) · [Bloque de `CLAUDE.md`](plugins/gzsm/skills/construir/assets/claude-md.md) | Construir |
+| [Constitución](plugins/gzsm/skills/construir/assets/constitucion.md) · [ADR](plugins/gzsm/skills/construir/assets/adr.md) · [Bloque de `CLAUDE.md`](plugins/gzsm/skills/construir/assets/claude-md.md) | Construir |
 | [Hipótesis](plugins/gzsm/skills/validar/assets/hipotesis.md) · [Idea (Orbit)](plugins/gzsm/skills/orbit/assets/idea.md) | Validar |
 | [Prototipo](plugins/gzsm/skills/explorar/assets/prototipo.md) | Explorar |
 | [Alta de cliente](plugins/gzsm/skills/implementar/assets/checklist-alta.md) | Implementar |

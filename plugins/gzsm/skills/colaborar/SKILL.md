@@ -24,6 +24,8 @@ Con dos personas y dos agentes, el riesgo no es técnico: es que cada uno trabaj
 ### Mismo contexto para todos
 - Un solo `CLAUDE.md` y un solo glosario del dominio (`GLOSSARY.md`) en el repo: los agentes de cada persona hablan el mismo idioma.
 - `estado.md` lo actualiza quien cierra la sesión (`gzsm:sesion-proyecto`).
+- **Nada que el otro necesite queda solo en notas personales.** Estado, decisiones, specs, runbook y tareas viven en el repo compartido (o en el lugar del grupo, si es de facultad). En la base de notas personal quedan la nota central, que enlaza al repo y dice con quién y dónde se decide, y lo privado. Si una nota personal tiene algo que el otro necesita, se pasa al repo.
+- Dentro del repo, enlaces Markdown relativos: un `[[ ]]` de un vault se ve roto en GitHub.
 
 ### Decisiones
 - Se toman y se registran en un solo lugar: un ADR o un issue. Nunca solo en un chat de mensajería.

@@ -38,7 +38,7 @@ Clasificar la variante y abrir el registro del cambio con `assets/change.md` (`d
 - Bug: el **test que falla por el motivo correcto** es la spec.
 - Preventivo: la señal de degradación medida y el comportamiento que **no** debe cambiar.
 - Escribir el **checklist de validación con el usuario ahora**, derivado de los requisitos. No se improvisa después del deploy.
-- Decisión de peso → ADR con `domain-modeling`, con su señal de cambio.
+- Decisión de peso → ADR con `domain-modeling` o con `assets/adr.md`, con su señal de cambio.
 
 ### E3 Construir
 - Rama propia. Slices de **dos días como máximo** y desplegables solos.

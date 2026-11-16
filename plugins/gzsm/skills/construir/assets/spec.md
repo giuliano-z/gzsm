@@ -1,5 +1,6 @@
 # Spec NNN — [nombre corto]
 *Módulo: Construir / Cambiar · Fecha: AAAA-MM-DD · Dueño: [quién]*
+*Relacionado: [estado](../../docs/estado.md) · [ADR-NNNN](../../docs/adr/NNNN-slug.md) · [CHANGE-NNN](../../docs/changes/CHANGE-NNN.md) (borrar los que no apliquen)*
 
 ## Para qué
 [Problema del usuario en dos o tres líneas, en términos del negocio.]
